@@ -1,0 +1,147 @@
+<div class="next-steps my-5" *ngIf="auth.loggedIn">
+  <h2 class="my-5 text-center">Tareas</h2>
+  <p-table
+    [columns]="cols"
+    [value]="tareas"
+    selectionMode="single"
+    [(selection)]="selectedCar"
+    (onRowSelect)="onRowSelect($event)"
+    [paginator]="true"
+    [rows]="10"
+  >
+    <ng-template pTemplate="caption">
+      Lista de tareas
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of columns">
+          <span *ngIf="col.field != 'fecha_vencimiento'">{{
+            rowData[col.field]
+          }}</span>
+
+          <span *ngIf="rowData[col.field] === ''">Ninguna</span>
+          <span *ngIf="col.field === 'fecha_vencimiento'">{{
+            rowData[col.field] | date: "yyyy-MM-dd"
+          }}</span>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary" let-rowData>
+      <div style="text-align: left;">
+        <button
+          type="button"
+          pButton
+          (click)="showDialogToAdd()"
+          label="+ Añadir Tarea"
+        ></button>
+      </div>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    header="Nueva Tarea"
+    [(visible)]="displayDialog"
+    [focusOnShow]="false"
+    showEffect="fade"
+    [modal]="true"
+    [style]="{ width: '400px' }"
+  >
+    <div class="p-grid ui-fluid" *ngIf="tarea">
+      <div class="p-col-4">
+        <label for="nombre">Nombre</label>
+      </div>
+      <div class="p-col-8">
+        <input
+          pInputText
+          id="nombre"
+          [(ngModel)]="tarea.nombre"
+          autofocus
+          required
+          class="form-control"
+        />
+      </div>
+      <div class="p-col-4">
+        <label for="prioridad">Prioridad</label>
+      </div>
+      <div class="p-col-8">
+        <p-dropdown
+          [options]="brands"
+          [(ngModel)]="tarea.prioridad"
+        ></p-dropdown>
+      </div>
+      <div class="p-col-4">
+        <label for="fecha_vencimiento">Fecha de vencimiento</label>
+      </div>
+      <div class="p-col-8">
+        <input
+          type="date"
+          class="form-control"
+          pInputText
+          id="fecha_vencimiento"
+          [ngModel]="tarea.fecha_vencimiento | date: 'yyyy-MM-dd'"
+          (ngModelChange)="tarea.fecha_vencimiento = $event"
+        />
+      </div>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button
+          type="button"
+          pButton
+          (click)="delete()"
+          label="Eliminar"
+        ></button>
+        <button
+          type="button"
+          pButton
+          icon="pi pi-check"
+          (click)="save()"
+          label="Guardar Cambios"
+        ></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</div>
+
+<p-dialog
+  header="Tareas próximas a vencer"
+  [(visible)]="displayModal"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item" *ngFor="let item of expirar">
+      <p class="alert alert-danger">{{ item.nombre }}</p>
+    </li>
+  </ul>
+  <p-footer>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      (click)="displayModal = false"
+      label="Cerrar"
+    ></button>
+  </p-footer>
+</p-dialog>
+<p class="text-center" *ngIf="auth.loggedIn">
+  <small
+    >Nota: Para las tareas próximas a vencer se toman en cuentas de las del
+    actual y el siguiente. Para editar una tarea, seleccione una fila para
+    desplegar la ventana emergente</small
+  >
+</p>
+<div class="jumbotron mt-5" *ngIf="!auth.loggedIn">
+  <h1 class="text-center">
+    Prueba de selección para Desarrollador FullStack, por favor incie la sesión
+    en el boton de la cabecera
+  </h1>
+</div>

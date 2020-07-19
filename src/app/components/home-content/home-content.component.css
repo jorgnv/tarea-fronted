@@ -1,0 +1,43 @@
+.btn-default {
+  color: #000;
+  background-color: #fff !important;
+  border-color: #fff !important;
+}
+
+.btn-red {
+  color: red;
+  background-color: #fff !important;
+  border-color: #fff !important;
+}
+
+.btn-red:hover {
+  color: rgb(211, 137, 137) !important;
+}
+
+.btn-default:hover {
+  color: silver !important;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: #87df9b !important;
+  border-color: #87df9b !important;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: red !important;
+  border-color: red !important;
+}
+
+.btn-danger:hover {
+  color: #fff;
+  background-color: rgb(230, 144, 144) !important;
+  border-color: rgb(230, 144, 144) !important;
+}
