@@ -42,6 +42,7 @@ export class HomeContentComponent implements OnInit {
   show: boolean;
   displayModal: boolean;
   expirar: any;
+  spinner: boolean;
   constructor(
     private modalService: NgbModal,
     private api: ApiService,
@@ -49,24 +50,26 @@ export class HomeContentComponent implements OnInit {
     public auth: AuthService,
     private messageService: MessageService
   ) {}
-
   ngOnInit() {
+    this.spinner = true;
     this.show = false;
-
-    this.auth.isAuthenticated$.subscribe((data) => {
-      if (data) {
-        this.auth.userProfile$.subscribe((profile) => {
-          this.idUser = profile["sub"];
-          this.api.getExpired(this.idUser).subscribe((res) => {
-            if (res["data"].length > 0) {
-              this.displayModal = true;
-              this.expirar = res["data"];
-            }
+    setTimeout(() => {
+      this.auth.isAuthenticated$.subscribe((data) => {
+        if (data) {
+          this.auth.userProfile$.subscribe((profile) => {
+            this.idUser = profile["sub"];
+            this.api.getExpired(this.idUser).subscribe((res) => {
+              if (res["data"].length > 0) {
+                this.displayModal = true;
+                this.expirar = res["data"];
+              }
+            });
+            this.spinner = false;
+            this.loadData();
           });
-          this.loadData();
-        });
-      }
-    });
+        }
+      });
+    }, 3000);
 
     this.brands = [
       { label: "Ninguna", value: "" },

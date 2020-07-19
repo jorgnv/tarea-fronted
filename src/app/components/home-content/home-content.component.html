@@ -1,4 +1,4 @@
-<div class="next-steps my-5" *ngIf="auth.loggedIn">
+<div class="next-steps my-5" *ngIf="auth.loggedIn && !spinner">
   <h2 class="my-5 text-center">Tareas</h2>
   <p-table
     [columns]="cols"
@@ -51,7 +51,8 @@
     [(visible)]="displayDialog"
     [focusOnShow]="false"
     showEffect="fade"
-    [modal]="true"
+    dismissableMask="true"
+    modal="true"
     [style]="{ width: '400px' }"
   >
     <div class="p-grid ui-fluid" *ngIf="tarea">
@@ -116,6 +117,8 @@
   [(visible)]="displayModal"
   [style]="{ width: '50vw' }"
   [baseZIndex]="10000"
+  dismissableMask="true"
+  modal="true"
 >
   <ul class="list-group list-group-flush">
     <li class="list-group-item" *ngFor="let item of expirar">
@@ -132,7 +135,7 @@
     ></button>
   </p-footer>
 </p-dialog>
-<p class="text-center" *ngIf="auth.loggedIn">
+<p class="text-center" *ngIf="auth.loggedIn && !spinner">
   <small
     >Nota: Para las tareas próximas a vencer se toman en cuentas de las del
     actual y el siguiente. Para editar una tarea, seleccione una fila para
@@ -144,4 +147,10 @@
     Prueba de selección para Desarrollador FullStack, por favor incie la sesión
     en el boton de la cabecera
   </h1>
+</div>
+<div class="container text-center mt-5" *ngIf="auth.loggedIn && spinner">
+  <h2>Cargando...</h2>
+  <div class="spinner-border" style="width: 6rem; height: 6rem;" role="status">
+    <span class="sr-only">Cargando...</span>
+  </div>
 </div>
